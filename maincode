@@ -1,0 +1,159 @@
+import requests
+import geocoder
+from geopy.geocoders import Nominatim
+from tkinter import *
+def world_news():
+    api_key='0e0562676ecf43e7b9da4c07b99ec086'
+    base_url='https://newsapi.org/v2/top-headlines?country=us&category=technology'
+    params = {
+        'apiKey': api_key,
+        'country': 'in',
+        'language':'en',
+        }
+    # Make a request to the API for the current country
+    response = requests.get(base_url, params=params)
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the JSON response
+        news_data = response.json()
+        # Access and process the news articles in 'news_data'
+        articles = news_data['articles']
+        # Print or use the news articles as needed
+        for article in articles:
+            print('->'+article['title'])
+            print(article['description'])#if button is clicked then do readmore function
+            #Read_more()
+        print("--------------------------------")    
+    else:
+        # Handle error cases
+        print('Error:', response.status_code)
+def country_news():
+    # Replace 'YOUR_API_KEY' with your actual API key
+    api_key = '0e0562676ecf43e7b9da4c07b99ec086'
+    # Define a list of countries to fetch news from
+    base_url = 'https://newsapi.org/v2/top-headlines'
+    # Iterate through the list of countries and fetch news for each
+    # Specify the query parameters for the specific country
+    params = {
+        'apiKey': api_key,
+        'country': 'in',
+        'language':'en',
+        }
+    # Make a request to the API for the current country
+    response = requests.get(base_url, params=params)
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the JSON response
+        news_data = response.json()
+        # Access and process the news articles in 'news_data'
+        articles = news_data['articles']
+        # Print or use the news articles as needed
+        for article in articles:
+            print('->'+article['title'])
+            print('=>'+article['description'])
+        print("--------------------------------")    
+    else:
+        # Handle error cases
+        print('Error:', response.status_code)
+def guntur_news():
+     api_key = '0e0562676ecf43e7b9da4c07b99ec086'
+        # Define the base URL for the News API
+     base_url = 'https://newsapi.org/v2/'
+        # Specify your query parameters, including the location (e.g., Guntur)
+     params = {
+         'apiKey': api_key,
+         'q': 'guntur',  # Your search query
+         'language': 'en',  # Language preference (English)
+         } 
+     # Make a request to the API
+     response = requests.get(base_url + 'everything', params=params)
+     # Check if the request was successful
+     if response.status_code == 200:
+        # Parse the JSON response
+        news_data = response.json()
+        # Access and process the news articles in 'news_data'
+        articles = news_data['articles']
+        # Print or use the news articles as needed
+        for article in articles:
+            print('->>'+article['title'])
+            print('>>'+article['description'])
+     else:
+        # Handle error cases
+        print('Error:', response.status_code)
+def vijayawada_news():
+    api_key = '0e0562676ecf43e7b9da4c07b99ec086'
+        # Define the base URL for the News API
+    base_url = 'https://newsapi.org/v2/'
+        # Specify your query parameters, including the location (e.g., Guntur)
+    params = {
+        'apiKey': api_key,
+        'q': 'vijayawada',  # Your search query
+        'language': 'en',  # Language preference (English)
+        } 
+     # Make a request to the API
+    response = requests.get(base_url + 'everything', params=params)
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the JSON response
+        news_data = response.json()
+        # Access and process the news articles in 'news_data'
+        articles = news_data['articles']
+        # Print or use the news articles as needed
+        for article in articles:
+            print('->>'+article['title'])
+            print('>>>'+article['description'])
+    else:
+        # Handle error cases
+        print('Error:', response.status_code)
+    
+def loc_city():
+    g=geocoder.ip("me")
+    if g.latlng:
+        latitude,longitude=g.latlng
+        if latitude==16.3067 and longitude==80.4365:
+            guntur_news()
+        if latitude==16.5062 and longitude==80.6480:
+            vijayawada_news()
+        city=get_city(latitude,longitude)
+        print("-----------------")
+        guntur_news()
+    if city:
+        api_key = '0e0562676ecf43e7b9da4c07b99ec086'
+        # Define the base URL for the News API
+        base_url = 'https://newsapi.org/v2/'
+        # Specify your query parameters, including the location (e.g., Guntur)
+        params = {
+        'apiKey': api_key,
+        'q': city,  # Your search query
+        'language': 'en',  # Language preference (English)
+        }
+        # Make a request to the API
+        response = requests.get(base_url + 'everything', params=params)
+        # Check if the request was successful
+        if response.status_code == 200:
+            # Parse the JSON response
+            news_data = response.json()
+            # Access and process the news articles in 'news_data'
+            articles = news_data['articles']
+            # Print or use the news articles as needed
+            for article in articles:
+                print('-'+article['title'])
+                print('--'+article['description'])
+            print("---------------------")
+        else:
+            # Handle error cases
+            print('Error:', response.status_code)
+def get_city(latitude,longitude):
+    geolocator=Nominatim(user_agent="citylocator")
+    location=geolocator.reverse((latitude,longitude),exactly_one=True)
+    if location:
+        address=location.raw.get('address',{})
+        city=address.get('city','')
+        return city
+    else:
+        return "city not found"
+world_news()
+country_news()
+loc_city()
+
+
